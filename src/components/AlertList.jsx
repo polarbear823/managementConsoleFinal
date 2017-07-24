@@ -39,6 +39,7 @@ class AlertList extends Component {
 
 	componentDidMount() {
 	  	this.loadTableData();
+		setInterval(this.loadTableData, 30000);
   }
   loadTableData() {
   		const alertListUrl = `${ROOT_API_URL}alerts`;

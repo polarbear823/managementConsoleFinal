@@ -13,12 +13,26 @@ class AlertTable extends Component {
 			return cell.alert.href;
 		}
 		function trSeverityFormat(rowData, rowIndex) {
-			if (rowData.severity == 1){
+			let severity = rowData.severity;
+			switch(severity){
+				case 1:
 				return 'tr-severity-1';
-			} else if (rowData.severity == 2) {
+				break;
+				case 2:
 				return 'tr-severity-2';
+				break;
+				case 3:
+				return 'tr-severity-3';
+				break;
+				case 4:
+				return 'tr-severity-4';
+				break;
+				case 5:
+				return 'tr-severity-5';
+				break;
+				default:
+				return 'tr-severity-other';
 			}
-			return 'tr-severity-other';
 		}
 		const optionTime = {
 		  year: 'numeric', month: 'numeric', day: 'numeric',
@@ -36,7 +50,9 @@ class AlertTable extends Component {
 	  		onSelect: onRowSelect
 		};
 		const options = {
-			searchPosition: 'left'
+			searchPosition: 'left',
+			defaultSortName: 'receiveTime',
+			defaultSortOrder: 'desc'
 		};
 		return (		
 			<BootstrapTable data={ this.props.alerts } selectRow={ selectRow } trClassName={trSeverityFormat} hover pagination options={options} search>

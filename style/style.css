@@ -43,11 +43,23 @@ body {
 .button-group {
   margin: 10px;
 }
-.tr-severity-1 {
-  background-color: #f2dede;
+.tr-severity-5 {
+  background-color: rgb(255, 11, 27);
+}
+.tr-severity-4 {
+  background-color: rgb(255, 154, 71);
+}
+.tr-severity-3 {
+  background-color: rgb(255, 222, 104);
 }
 .tr-severity-2 {
-  background-color: #fcf8e3;
+  background-color: rgb(40, 189, 189);
+}
+.tr-severity-1 {
+  background-color: rgb(149, 212, 114);
+}
+.tr-severity-other {
+  background-color: rgb(116, 173, 232);
 }
 .alerts-table {
   margin: 10px;
