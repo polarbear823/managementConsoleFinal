@@ -38,7 +38,7 @@ body {
   border-top-right-radius: 0;
 }
 .single-button {
-  margin-right: 10px;
+  margin: 0px 10px;
 }
 .button-group {
   margin: 10px;
@@ -63,4 +63,22 @@ body {
 }
 .alerts-table {
   margin: 10px;
+}
+.date-time-picker {
+  display: inline-block;
+  width: 55%;
+  vertical-align: middle;
+  margin-left: 50px;
+}
+.date-time-label {
+  margin-top: 5px;
+}
+.grid {
+  width: inherit !important;
+}
+.table-border {
+  border: 1px solid grey;
+}
+.key-text {
+  font-weight: bold;
 }

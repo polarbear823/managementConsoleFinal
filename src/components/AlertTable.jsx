@@ -1,38 +1,42 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {BootstrapTable, TableHeaderColumn} from 'react-bootstrap-table';
+import {Button, Modal, Grid, Col, Row} from 'react-bootstrap';
+import {getSeverityClassName, SEVERITY_STRING_MAP} from '../configure_variables';
 
 class AlertTable extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			showModal: false,
+			shownAlert: null
+		};
+		this.close = this.close.bind(this);
+		this.open = this.open.bind(this);
+	}
+	close(){
+		this.setState({showModal: false});
+	}
+	open(row){
+		this.setState({showModal: true, shownAlert: row});
+	}
 	render(){
+		let showModal = false;
 		const currentProps = this.props;
+		const current = this;
 		function onRowSelect(row, isSelected, e){
 			currentProps.setSelectAlert(isSelected ? row : null);
-			console.log(row);
 		}
 		function linkFormatter(cell){
 			return cell.alert.href;
 		}
+
+		function severityFormatter(cell) {
+			return SEVERITY_STRING_MAP.get(cell);
+		}
 		function trSeverityFormat(rowData, rowIndex) {
 			let severity = rowData.severity;
-			switch(severity){
-				case 1:
-				return 'tr-severity-1';
-				break;
-				case 2:
-				return 'tr-severity-2';
-				break;
-				case 3:
-				return 'tr-severity-3';
-				break;
-				case 4:
-				return 'tr-severity-4';
-				break;
-				case 5:
-				return 'tr-severity-5';
-				break;
-				default:
-				return 'tr-severity-other';
-			}
+			return getSeverityClassName(severity);
 		}
 		const optionTime = {
 		  year: 'numeric', month: 'numeric', day: 'numeric',
@@ -42,6 +46,34 @@ class AlertTable extends Component {
 		function dateFormatter(cell, row) {
 			let date = (new Date(cell));
 			return date.toLocaleDateString('en-US', optionTime);
+		}
+		function linkDetailFormatter(cell, row) {
+			return (
+				<Button bsStyle="link" onClick={() => showDetailModal(row)}>{cell}</Button>
+				)
+		}
+
+		function showDetailModal(row) {
+			current.open(row);
+		}
+
+		function showDetails(alert) {
+			let rows = [];
+			for (let key in alert) {
+				if (alert.hasOwnProperty(key)) {
+					rows.push(
+						<Row className="show-grid" key={key} className="table-border">
+					      <Col xs={12} md={4} className="key-text">{key}</Col>
+					      <Col xs={6} md={8} className="value-text">{alert[key]}</Col>
+					    </Row>
+						)
+				}
+			}
+			return (
+				<Grid className="grid">				
+				    {rows}
+			    </Grid>
+				)
 		}
 		const selectRow = {
 	  		mode: 'radio',
@@ -54,14 +86,26 @@ class AlertTable extends Component {
 			defaultSortName: 'receiveTime',
 			defaultSortOrder: 'desc'
 		};
-		return (		
+		return (
+			<div>		
 			<BootstrapTable data={ this.props.alerts } selectRow={ selectRow } trClassName={trSeverityFormat} hover pagination options={options} search>
-				<TableHeaderColumn isKey dataField='_links' width="0" dataFormat={linkFormatter}>href</TableHeaderColumn>
-				<TableHeaderColumn dataField='severity' width="8%" dataSort>Severity</TableHeaderColumn>
-				<TableHeaderColumn dataField='timestamp' width="20%" dataSort dataFormat={ dateFormatter }>TimeStamp</TableHeaderColumn>
-				<TableHeaderColumn dataField='receiveTime' width="20%" dataSort dataFormat={ dateFormatter }>Receive time</TableHeaderColumn>
+				<TableHeaderColumn isKey dataField='id' width="5%" dataSort dataFormat={ linkDetailFormatter }>id</TableHeaderColumn>
+				<TableHeaderColumn dataField='severity' width="8%" dataSort dataFormat={severityFormatter}>Severity</TableHeaderColumn>
+				<TableHeaderColumn dataField='alertObj' width="10%" dataSort >Ip</TableHeaderColumn>				
+				<TableHeaderColumn dataField='alertTime' width="15%" dataSort dataFormat={ dateFormatter }>TimeStamp</TableHeaderColumn>
+				<TableHeaderColumn dataField='receiveTime' width="15%" dataSort dataFormat={ dateFormatter }>Receive time</TableHeaderColumn>
 				<TableHeaderColumn dataField='alertMsg'>Alert detail</TableHeaderColumn>
 			</BootstrapTable>
+			<Modal show={this.state.showModal} onHide={this.close}>
+					<Modal.Header closeButton>
+            			<Modal.Title>Alert Detail: {this.state.shownAlert === null ? "" : this.state.shownAlert.id}</Modal.Title>
+          			</Modal.Header>
+          			<Modal.Body>
+          				{showDetails(this.state.shownAlert)}
+          			</Modal.Body>
+         			
+			</Modal>
+			</div>
 			);
 	}
 }
