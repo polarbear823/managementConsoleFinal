@@ -77,7 +77,7 @@ class ButtonGroup extends Component {
 			      <MenuItem eventKey="4" className="tr-severity-4">{SEVERITY_STRING_MAP.get(4)}</MenuItem>
 			      <MenuItem eventKey="5" className="tr-severity-5">{SEVERITY_STRING_MAP.get(5)}</MenuItem>
 			      <MenuItem eventKey="-1" className="tr-severity-other">{SEVERITY_STRING_MAP.get(-1)}</MenuItem>
-			      <MenuItem eventKey="clear">Clear</MenuItem>
+			      <MenuItem eventKey="clear">All</MenuItem>
 			    </DropdownButton>
 				<Button bsStyle="primary" className="single-button" disabled={!this.props.selectAlert} onClick={this.open}>Delete</Button>
 				<DateTimePicker onChange={ (startDate, endDate) => this.dateTimeRangeChange(startDate, endDate)} startDate={this.state.startDate} endDate={this.state.endDate}/>

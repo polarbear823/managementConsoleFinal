@@ -83,16 +83,16 @@ class AlertTable extends Component {
 		};
 		const options = {
 			searchPosition: 'left',
-			defaultSortName: 'receiveTime',
+			defaultSortName: 'alertTime',
 			defaultSortOrder: 'desc'
 		};
 		return (
 			<div>		
-			<BootstrapTable data={ this.props.alerts } selectRow={ selectRow } trClassName={trSeverityFormat} hover pagination options={options} search>
-				<TableHeaderColumn isKey dataField='id' width="5%" dataSort dataFormat={ linkDetailFormatter }>id</TableHeaderColumn>
+			<BootstrapTable data={ this.props.alerts } selectRow={ selectRow } trClassName={trSeverityFormat} hover pagination options={options} search tableHeaderClass='header-style'>
+				<TableHeaderColumn isKey dataField='id' width="8%" dataSort dataFormat={ linkDetailFormatter } dataAlign="center">id</TableHeaderColumn>
 				<TableHeaderColumn dataField='severity' width="8%" dataSort dataFormat={severityFormatter}>Severity</TableHeaderColumn>
 				<TableHeaderColumn dataField='alertObj' width="10%" dataSort >Ip</TableHeaderColumn>				
-				<TableHeaderColumn dataField='alertTime' width="15%" dataSort dataFormat={ dateFormatter }>TimeStamp</TableHeaderColumn>
+				<TableHeaderColumn dataField='alertTime' width="15%" dataSort dataFormat={ dateFormatter }>Alert Time</TableHeaderColumn>
 				<TableHeaderColumn dataField='receiveTime' width="15%" dataSort dataFormat={ dateFormatter }>Receive time</TableHeaderColumn>
 				<TableHeaderColumn dataField='alertMsg'>Alert detail</TableHeaderColumn>
 			</BootstrapTable>

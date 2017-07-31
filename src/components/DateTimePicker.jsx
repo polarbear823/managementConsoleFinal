@@ -59,8 +59,8 @@ class DateTimePicker extends Component{
 	    };
 		return (
 			<div className="form-group date-time-picker">
-		        <label className="control-label col-md-3 date-time-label">Choose Date and Time</label>
-		        <div className="col-md-4">
+		        <label className="control-label col-md-5 date-time-label">Choose Date and Time</label>
+		        <div className="col-md-7">
 		          <DatetimeRangePicker
 		            timePicker
 		            timePicker24Hour

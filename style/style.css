@@ -66,7 +66,7 @@ body {
 }
 .date-time-picker {
   display: inline-block;
-  width: 55%;
+  width: 50%;
   vertical-align: middle;
   margin-left: 50px;
 }
@@ -81,4 +81,11 @@ body {
 }
 .key-text {
   font-weight: bold;
+}
+.header-style {
+  background-color: rgb(242, 242, 242);
+}
+
+.header-style th {
+  text-align: center !important;
 }
