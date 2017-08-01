@@ -14,7 +14,7 @@ class ButtonGroup extends Component {
 			dropdownTitle: "Select Severity",
 			severityBgColor: "",
 			startDate: moment().subtract(29, 'days'),
-			endDate: moment().add(1, 'years')
+			endDate: moment().endOf('day')
 		};
 		this.close = this.close.bind(this);
 		this.open = this.open.bind(this);
