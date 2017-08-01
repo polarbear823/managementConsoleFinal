@@ -49,7 +49,7 @@ class AlertList extends Component {
   }
   loadTableData() {
   		let startDate = moment().subtract(29, 'days');
-  		let endDate = moment();
+  		let endDate = moment().add(1, 'years');
   		const alertListUrl = `${ROOT_API_URL}search/findByAlertTime?startTime=${startDate.valueOf()}&endTime=${endDate.valueOf()}`;
 	  	axios.get(alertListUrl)
 	  	.then(response => {

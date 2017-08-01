@@ -59,7 +59,7 @@ class DateTimePicker extends Component{
 	    };
 		return (
 			<div className="form-group date-time-picker">
-		        <label className="control-label col-md-5 date-time-label">Choose Date and Time</label>
+		        <label className="control-label date-time-label">Choose Date and Time</label>
 		        <div className="col-md-7">
 		          <DatetimeRangePicker
 		            timePicker

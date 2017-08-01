@@ -72,6 +72,7 @@ body {
 }
 .date-time-label {
   margin-top: 5px;
+  float: left;
 }
 .grid {
   width: inherit !important;
@@ -88,4 +89,7 @@ body {
 
 .header-style th {
   text-align: center !important;
+}
+#pageDropDown {
+  margin: 20px 0px;
 }
