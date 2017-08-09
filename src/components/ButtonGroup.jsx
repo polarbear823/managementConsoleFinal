@@ -53,7 +53,7 @@ class ButtonGroup extends Component {
 	  	});
 	}
 	loadTableData(startDate, endDate) {
-  		const alertListUrl = `${ROOT_API_URL}search/findByAlertTime?startTime=${startDate.valueOf()}&endTime=${endDate.valueOf()}`;
+  		const alertListUrl = `${ROOT_API_URL}search/findByReceiveTime?startTime=${startDate.valueOf()}&endTime=${endDate.valueOf()}`;
 	  	axios.get(alertListUrl)
 	  	.then(response => {
 	  		this.props.refreshTable(response.data);
