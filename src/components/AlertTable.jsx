@@ -83,7 +83,7 @@ class AlertTable extends Component {
 		};
 		const options = {
 			searchPosition: 'left',
-			defaultSortName: 'alertTime',
+			defaultSortName: 'receiveTime',
 			defaultSortOrder: 'desc'
 		};
 		return (
