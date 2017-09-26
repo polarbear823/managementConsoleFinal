@@ -14,19 +14,28 @@ class AlertList extends Component {
 		this.state = {
 			alerts: [],
 			filteredAlerts: [],
-			selectAlert: null
+			selectAlert: null,
+			showHideLoading: false,
+			showHideNoMoreData: false
 		};
 		this.setSelectAlert = this.setSelectAlert.bind(this);
 		this.loadTableData = this.loadTableData.bind(this);
+		this.loadMoreTableData = this.loadMoreTableData.bind(this);
 	}
 	render(){
 		return (
 			<div className="alert-list-panel">
 				<NavBar />
-				<ButtonGroup selectAlert={this.state.selectAlert} alerts={this.state.alerts} filteredlerts={this.state.filteredAlerts} refreshFilteredTable={(newAlerts) => this.refreshFilteredTable(newAlerts)} refreshTable={(newAlerts) => this.refreshTable(newAlerts)}/>
-				<div className="alerts-table">
+				<ButtonGroup selectAlert={this.state.selectAlert} alerts={this.state.alerts} filteredlerts={this.state.filteredAlerts} refreshFilteredTable={(newAlerts) => this.refreshFilteredTable(newAlerts)} refreshTable={(newAlerts) => this.refreshTable(newAlerts)} showNoMoreData={(show) => this.showNoMoreData(show)}/>
+				<div className="alerts-table" ref={ node => this.contentNode = node }>
 				<AlertTable alerts={this.state.filteredAlerts} setSelectAlert={alert => this.setSelectAlert(alert)}/>
 				</div>
+				{
+					this.state.showHideLoading ? <div>Loading...</div> : null
+				}
+				{
+					this.state.showHideNoMoreData ? <div>No more data</div> : null
+				}
 			</div>
 			);
 	}
@@ -43,10 +52,22 @@ class AlertList extends Component {
 		this.setState({alerts: newAlerts});
 	}
 
+	showNoMoreData(show) {
+		this.setState({showHideNoMoreData: show});
+	}
+
 	componentDidMount() {
-	  	this.loadTableData();
-		setInterval(this.loadTableData, 30000);
-  }
+		if (this.contentNode) {
+			this.contentNode.addEventListener('scroll', this.onScrollHandle.bind(this));
+			this.loadTableData();
+		}
+		//setInterval(this.loadTableData, 30000);
+  	}
+  	componentWillUnmount() {
+	    if (this.contentNode) {
+	      this.contentNode.removeEventListener('scroll', this.onScrollHandle.bind(this));
+	    }
+    }
   loadTableData() {
   		let startDate = moment().subtract(29, 'days');
   		let endDate = moment().endOf('day');
@@ -58,6 +79,36 @@ class AlertList extends Component {
 	  	.catch(function(error){
 	  		console.log(error);
 	  	});
+  }
+  loadMoreTableData(startDate) {
+  		let endDate = moment().endOf('day');
+  		const alertListUrl = `${ROOT_API_URL}search/findByReceiveTime?startTime=${startDate.valueOf()}&endTime=${endDate.valueOf()}`;
+	  	axios.get(alertListUrl)
+	  	.then(response => {
+	  		let newAlerts = [ ...new Set( [].concat( this.state.alerts, response.data ) ) ];
+	  		this.setState({showHideLoading: false});
+	  		if (response.data.length == 0) {
+	  			this.setState({showHideNoMoreData: true});	  			
+	  		}
+	  		this.setState({alerts: newAlerts, filteredAlerts: newAlerts});
+	  	})
+	  	.catch(function(error){
+	  		console.log(error);
+	  	});
+  }
+  onScrollHandle(event) {
+    const clientHeight = event.target.clientHeight
+    const scrollHeight = event.target.scrollHeight
+    const scrollTop = event.target.scrollTop
+    const isBottom = (clientHeight + scrollTop === scrollHeight)
+    if (isBottom) {
+    	let lastAlertIndex = this.state.alerts.length - 1;
+    	if (lastAlertIndex >= 0 && !this.state.showHideNoMoreData){
+    		this.setState({showHideLoading: true});
+    		console.log(this.state.alerts[lastAlertIndex].receiveTime);
+    		this.loadMoreTableData(this.state.alerts[lastAlertIndex].receiveTime);
+    	}
+    }
   }
 }
 

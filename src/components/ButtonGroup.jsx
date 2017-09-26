@@ -65,6 +65,7 @@ class ButtonGroup extends Component {
   }
   dateTimeRangeChange(startDate, endDate){
   	this.setState({startDate: startDate, endDate: endDate, dropdownTitle: "Select Severity"});
+  	this.props.showNoMoreData(false);
   	this.loadTableData(startDate, endDate);
   }
 	render(){
