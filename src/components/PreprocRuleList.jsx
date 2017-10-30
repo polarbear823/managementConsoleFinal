@@ -55,7 +55,7 @@ class PreprocRuleList extends Component {
 			this.syslogMatchNode.value = rule.syslogMatchNode;
 		} else if (TRAP === rule.ruleType) {
 			this.trapSeparator.value = rule.trapSeparator;
-			this.trapCondition.value = rule.trapCondition;
+			this.trapConditions.value = rule.trapConditions;
 		}
 	}
 
@@ -81,12 +81,12 @@ class PreprocRuleList extends Component {
 				syslogMatchPattern:"",
 				syslogMatchNode:"",
 				trapSeparator: "",
-				trapCondition:""
+				trapConditions:""
 			};
 			this.setState({selectedPreprocRule: emptyRule});
 			setTimeout(() => this.setValueToForm(emptyRule), 0);
 		} else {
-			this.setState({selectedPreprocRule: rule});
+			this.setState({selectedPreprocRule: rule, ruleType: rule.ruleType});
 			setTimeout(() => this.setValueToForm(rule), 0);
 		}
 	}
@@ -176,7 +176,7 @@ class PreprocRuleList extends Component {
 		syslogMatchPattern: SYSLOG === this.ruleType.value ? this.syslogMatchPattern.value : null,
 		syslogMatchNode: SYSLOG === this.ruleType.value ? this.syslogMatchNode.value : null,
 		trapSeparator: TRAP === this.ruleType.value ? this.trapSeparator.value : null,
-		trapCondition: TRAP === this.ruleType.value ? this.trapCondition.value : null
+		trapConditions: TRAP === this.ruleType.value ? this.trapConditions.value : null
   	}
   	if (this.state.mode === ADD_MODE) {
   		const postUrl = ROOT_PREPROC_RULES_URL;
@@ -351,7 +351,7 @@ class PreprocRuleList extends Component {
 									</FormGroup>
 									<FormGroup controlId="formControlsTrapConditions">
 										<ControlLabel>Trap conditions</ControlLabel>
-										<FormControl type="text" placeholder="Enter trap conditions" inputRef={ref => { this.trapCondition = ref; }}/>						        
+										<FormControl type="text" placeholder="Enter trap conditions" inputRef={ref => { this.trapConditions = ref; }}/>						        
 									</FormGroup>
 								</div>
 								<Button bsStyle="primary" type="submit">Save</Button>
