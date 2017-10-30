@@ -85,6 +85,9 @@ body {
 .key-text {
   font-weight: bold;
 }
+.value-text {
+  word-break: break-all;
+}
 .header-style {
   background-color: rgb(242, 242, 242);
 }
@@ -94,4 +97,25 @@ body {
 }
 #pageDropDown {
   margin: 20px 0px;
+}
+
+.preproc-detail {
+  margin: 20px;
+}
+
+.preproc-title {
+  text-align:right;
+  font-weight: bold;
+}
+.vertical-middle {
+  vertical-align: middle !important;
+}
+
+.edit-content {
+  max-height: 400px;
+  overflow-y: scroll;
+}
+
+.hide {
+  display: none;
 }

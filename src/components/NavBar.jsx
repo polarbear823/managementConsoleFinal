@@ -11,7 +11,7 @@ const NavBar = () => {
 			</Navbar.Header>
 			<Nav>
 				<NavItem eventKey={1} href="/list">Alerts</NavItem>
-				<NavItem eventKey={2} href="/list">Other</NavItem>
+				<NavItem eventKey={2} href="/preproclist">PreProc Rules</NavItem>
 			</Nav>
 		</Navbar>
 		);

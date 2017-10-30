@@ -89,7 +89,7 @@ class AlertTable extends Component {
 		return (
 			<div>		
 			<BootstrapTable data={ this.props.alerts } selectRow={ selectRow } trClassName={trSeverityFormat} hover options={options} search tableHeaderClass='header-style'>
-				<TableHeaderColumn isKey dataField='id' width="8%" dataSort dataFormat={ linkDetailFormatter } dataAlign="center">id</TableHeaderColumn>
+				<TableHeaderColumn isKey dataField='alertUID' width="8%" dataSort dataFormat={ linkDetailFormatter } dataAlign="center">id</TableHeaderColumn>
 				<TableHeaderColumn dataField='severity' width="8%" dataSort dataFormat={severityFormatter}>Severity</TableHeaderColumn>
 				<TableHeaderColumn dataField='alertObj' width="15%" dataSort >Ip</TableHeaderColumn>				
 				<TableHeaderColumn dataField='alertTime' width="15%" dataSort dataFormat={ dateFormatter }>Alert Time</TableHeaderColumn>

@@ -1,10 +1,12 @@
-export const ROOT_API_URL = "http://192.168.1.200:8080/api/";
+export const ROOT_URL = "http://192.168.1.45:8080/";
+export const ROOT_ALERTS_API_URL = `${ROOT_URL}api/alerts/`;
+export const ROOT_PREPROC_RULES_URL = `${ROOT_URL}api/preprocrules/`;
 export const SEVERITY_STRING_MAP = new Map().set(1, "Normal")
 											.set(2, "Warning")
 											.set(3, "Minor")
 											.set(4, "Major")
 											.set(5, "Critical")
-											.set(-1, "Unknow");
+											.set(-1, "Unknown");
 export function getSeverityClassName(severity) {
 	switch(severity){
 				case 1:

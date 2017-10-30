@@ -6,7 +6,7 @@ import SearchBar from './SearchBar.jsx';
 import ButtonGroup from './ButtonGroup.jsx';
 import AlertTable from './AlertTable.jsx';
 import NavBar from './NavBar.jsx';
-import {ROOT_API_URL} from '../configure_variables'
+import {ROOT_ALERTS_API_URL} from '../configure_variables';
 
 class AlertList extends Component {
 	constructor(props) {
@@ -24,7 +24,7 @@ class AlertList extends Component {
 	}
 	render(){
 		return (
-			<div className="alert-list-panel">
+			<div>
 				<NavBar />
 				<ButtonGroup selectAlert={this.state.selectAlert} alerts={this.state.alerts} filteredlerts={this.state.filteredAlerts} refreshFilteredTable={(newAlerts) => this.refreshFilteredTable(newAlerts)} refreshTable={(newAlerts) => this.refreshTable(newAlerts)} showNoMoreData={(show) => this.showNoMoreData(show)}/>
 				<div className="alerts-table" ref={ node => this.contentNode = node }>
@@ -71,7 +71,7 @@ class AlertList extends Component {
   loadTableData() {
   		let startDate = moment().subtract(29, 'days');
   		let endDate = moment().endOf('day');
-  		const alertListUrl = `${ROOT_API_URL}search/findByReceiveTime?startTime=${startDate.valueOf()}&endTime=${endDate.valueOf()}`;
+  		const alertListUrl = `${ROOT_ALERTS_API_URL}search/findByReceiveTime?startTime=${startDate.valueOf()}&endTime=${endDate.valueOf()}`;
 	  	axios.get(alertListUrl)
 	  	.then(response => {
 	  		this.setState({alerts: response.data, filteredAlerts: response.data});
@@ -82,7 +82,7 @@ class AlertList extends Component {
   }
   loadMoreTableData(startDate) {
   		let endDate = moment().endOf('day');
-  		const alertListUrl = `${ROOT_API_URL}search/findByReceiveTime?startTime=${startDate.valueOf()}&endTime=${endDate.valueOf()}`;
+  		const alertListUrl = `${ROOT_ALERTS_API_URL}search/findByReceiveTime?startTime=${startDate.valueOf()}&endTime=${endDate.valueOf()}`;
 	  	axios.get(alertListUrl)
 	  	.then(response => {
 	  		let newAlerts = [ ...new Set( [].concat( this.state.alerts, response.data ) ) ];

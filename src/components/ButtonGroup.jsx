@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 import moment from 'moment';
 import { Button, Modal, DropdownButton, MenuItem } from 'react-bootstrap';
-import {ROOT_API_URL, SEVERITY_STRING_MAP, getSeverityClassName} from '../configure_variables';
+import {ROOT_ALERTS_API_URL, SEVERITY_STRING_MAP, getSeverityClassName} from '../configure_variables';
 import DateTimePicker from './DateTimePicker.jsx';
 
 class ButtonGroup extends Component {
@@ -42,7 +42,7 @@ class ButtonGroup extends Component {
 		this.props.refreshFilteredTable(filteredAlerts);
 	}
 	deleteAlert(){
-		const deleteUrl = `${ROOT_API_URL}alerts/${this.props.selectAlert.id}`;
+		const deleteUrl = `${ROOT_ALERTS_API_URL}alerts/${this.props.selectAlert.id}`;
 	  	axios.delete(deleteUrl)
 	  	.then(response => {
 	  		this.close();
@@ -53,7 +53,7 @@ class ButtonGroup extends Component {
 	  	});
 	}
 	loadTableData(startDate, endDate) {
-  		const alertListUrl = `${ROOT_API_URL}search/findByReceiveTime?startTime=${startDate.valueOf()}&endTime=${endDate.valueOf()}`;
+  		const alertListUrl = `${ROOT_ALERTS_API_URL}search/findByReceiveTime?startTime=${startDate.valueOf()}&endTime=${endDate.valueOf()}`;
 	  	axios.get(alertListUrl)
 	  	.then(response => {
 	  		this.props.refreshTable(response.data);
