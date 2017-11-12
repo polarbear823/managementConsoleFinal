@@ -83,7 +83,6 @@ class PreprocRuleList extends Component {
 				trapSeparator: "",
 				trapConditions:""
 			};
-			this.setState({selectedPreprocRule: emptyRule});
 			setTimeout(() => this.setValueToForm(emptyRule), 0);
 		} else {
 			this.setState({selectedPreprocRule: rule, ruleType: rule.ruleType});
@@ -270,7 +269,7 @@ class PreprocRuleList extends Component {
 			</Modal>
 			<Modal show={this.state.showEditModal} onHide={this.closeAddEditModal}>
 					<Modal.Header closeButton>
-            			<Modal.Title>{this.state.mode === ADD_MODE ? "Add" : "Edit"} Rule {this.state.selectedPreprocRule === null ? "" : this.state.selectedPreprocRule.ruleName}</Modal.Title>
+            			<Modal.Title>{this.state.mode === ADD_MODE ? "Add" : "Edit"} Rule {this.state.mode === ADD_MODE ? "" : this.state.selectedPreprocRule.ruleName}</Modal.Title>
           			</Modal.Header>
           			<Modal.Body>
           				<form className="edit-content" onSubmit={this.saveRule}>

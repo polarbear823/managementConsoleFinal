@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 import moment from 'moment';
 import { Button, Modal, DropdownButton, MenuItem } from 'react-bootstrap';
-import {ROOT_ALERTS_API_URL, SEVERITY_STRING_MAP, getSeverityClassName} from '../configure_variables';
+import {ROOT_ALERTS_API_URL, SEVERITY_STRING_MAP, getSeverityClassName, SEVERITY_NUM_ARRAY} from '../configure_variables';
 import DateTimePicker from './DateTimePicker.jsx';
+import SeverityNumberBlock from './SeverityNumberBlock.jsx';
 
 class ButtonGroup extends Component {
 	constructor(props) {
@@ -22,6 +23,7 @@ class ButtonGroup extends Component {
 		this.loadTableData = this.loadTableData.bind(this);
 		this.handleSelect = this.handleSelect.bind(this);
 		this.dateTimeRangeChange = this.dateTimeRangeChange.bind(this);
+		this.getNumberOfSevAlert = this.getNumberOfSevAlert.bind(this);
 	}
 	close(){
 		this.setState({showModal: false});
@@ -68,20 +70,23 @@ class ButtonGroup extends Component {
   	this.props.showNoMoreData(false);
   	this.loadTableData(startDate, endDate);
   }
+  getNumberOfSevAlert(sevLevel) {
+	return this.props.alerts.filter(alert => alert.severity === sevLevel).length;
+  };  
 	render(){
 		return (
 			<div className="button-group">
-				<DropdownButton title={this.state.dropdownTitle} id="bg-nested-dropdown" onSelect={this.handleSelect} className={this.state.severityBgColor}>				  
-			      <MenuItem eventKey="1" className="tr-severity-1">{SEVERITY_STRING_MAP.get(1)}</MenuItem>
-			      <MenuItem eventKey="2" className="tr-severity-2">{SEVERITY_STRING_MAP.get(2)}</MenuItem>
-			      <MenuItem eventKey="3" className="tr-severity-3">{SEVERITY_STRING_MAP.get(3)}</MenuItem>
-			      <MenuItem eventKey="4" className="tr-severity-4">{SEVERITY_STRING_MAP.get(4)}</MenuItem>
-			      <MenuItem eventKey="5" className="tr-severity-5">{SEVERITY_STRING_MAP.get(5)}</MenuItem>
-			      <MenuItem eventKey="-1" className="tr-severity-other">{SEVERITY_STRING_MAP.get(-1)}</MenuItem>
-			      <MenuItem eventKey="clear">All</MenuItem>
-			    </DropdownButton>
-				<Button bsStyle="primary" className="single-button" disabled={!this.props.selectAlert} onClick={this.open}>Delete</Button>
 				<DateTimePicker onChange={ (startDate, endDate) => this.dateTimeRangeChange(startDate, endDate)} startDate={this.state.startDate} endDate={this.state.endDate}/>
+				{
+					SEVERITY_NUM_ARRAY.map(num => {
+						return (<SeverityNumberBlock 
+									colorClass={getSeverityClassName(num)} 
+									num={this.getNumberOfSevAlert(num)} 
+									onBlockClick = {() => this.props.refreshFilteredTable(this.props.alerts.filter(alert => alert.severity === num))}
+									key={num}/>);
+					})
+				}
+				<Button bsStyle="primary" className="single-button" disabled={!this.props.selectAlert} onClick={this.open}>Delete</Button>
 				<Modal show={this.state.showModal} onHide={this.close}>
 					<Modal.Header closeButton>
             			<Modal.Title>Delete alert</Modal.Title>

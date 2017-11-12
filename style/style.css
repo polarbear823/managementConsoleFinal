@@ -119,3 +119,19 @@ body {
 .hide {
   display: none;
 }
+
+.block-combo {
+  display:inline-block;
+  margin-left: 20px;
+  vertical-align: top;
+}
+
+.block {
+  height: 20px;
+  width: 20px;
+  border: 1px solid black;
+  display: inline-block;
+  margin-right: 5px;
+  vertical-align: top;
+  cursor: pointer;
+}
