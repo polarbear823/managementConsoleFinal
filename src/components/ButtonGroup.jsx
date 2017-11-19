@@ -46,15 +46,17 @@ class ButtonGroup extends Component {
 		this.props.refreshFilteredTable(filteredAlerts);
 	}
 	deleteAlert(){
-		const deleteUrl = `${ROOT_ALERTS_API_URL}alerts/${this.props.selectAlert.id}`;
-	  	axios.delete(deleteUrl)
-	  	.then(response => {
-	  		this.close();
-	  		this.loadTableData(this.state.startDate, this.state.endDate);
-	  	})
-	  	.catch(function(error){
-	  		console.log(error);
-	  	});
+		// const deleteUrl = `${ROOT_ALERTS_API_URL}alerts/${this.props.selectAlert.id}`;
+	 //  	axios.delete(deleteUrl)
+	 //  	.then(response => {
+	 //  		this.close();
+	 //  		this.loadTableData(this.state.startDate, this.state.endDate);
+	 //  	})
+	 //  	.catch(function(error){
+	 //  		console.log(error);
+	 //  	});
+	 this.props.deleteAlert(this.props.selectAlert);
+	 this.close();
 	}
 	loadTableData(startDate, endDate) {
   		const alertListUrl = `${ROOT_ALERTS_API_URL}search/findByReceiveTime?startTime=${startDate.valueOf()}&endTime=${endDate.valueOf()}`;

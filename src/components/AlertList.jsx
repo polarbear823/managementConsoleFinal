@@ -38,7 +38,8 @@ class AlertList extends Component {
 							 filterList={this.state.filterList} 
 							 viewList={this.state.viewList} 
 							 currentView={this.state.currentView}
-							 onViewItemClicked={(viewName) => this.onViewItemClicked(viewName)}/>
+							 onViewItemClicked={(viewName) => this.onViewItemClicked(viewName)}
+							 deleteAlert={(alert) => this.deleteMockAlert(alert)}/>
 				<div className="alerts-table" ref={ node => this.contentNode = node }>
 				<AlertTable alerts={this.state.filteredAlerts} 
 							setSelectAlert={alert => this.setSelectAlert(alert)}
@@ -52,6 +53,12 @@ class AlertList extends Component {
 				}
 			</div>
 			);
+	}
+
+	deleteMockAlert(mockAlert) {
+		this.setState({
+			alerts: this.state.alerts.filter(alert => alert.alertUID != mockAlert.alertUID), 
+			filteredAlerts: this.state.filteredAlerts.filter(alert => alert.alertUID != mockAlert.alertUID)});
 	}
 
 	onViewItemClicked(viewName) {
