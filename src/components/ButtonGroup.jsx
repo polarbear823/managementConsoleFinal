@@ -6,6 +6,7 @@ import { Button, Modal, DropdownButton, MenuItem } from 'react-bootstrap';
 import {ROOT_ALERTS_API_URL, SEVERITY_STRING_MAP, getSeverityClassName, SEVERITY_NUM_ARRAY} from '../configure_variables';
 import DateTimePicker from './DateTimePicker.jsx';
 import SeverityNumberBlock from './SeverityNumberBlock.jsx';
+import DropDownList from './DropDownList.jsx';
 
 class ButtonGroup extends Component {
 	constructor(props) {
@@ -24,6 +25,7 @@ class ButtonGroup extends Component {
 		this.handleSelect = this.handleSelect.bind(this);
 		this.dateTimeRangeChange = this.dateTimeRangeChange.bind(this);
 		this.getNumberOfSevAlert = this.getNumberOfSevAlert.bind(this);
+		this.filterAlertsChange = this.filterAlertsChange.bind(this);
 	}
 	close(){
 		this.setState({showModal: false});
@@ -72,11 +74,26 @@ class ButtonGroup extends Component {
   }
   getNumberOfSevAlert(sevLevel) {
 	return this.props.alerts.filter(alert => alert.severity === sevLevel).length;
-  };  
+  }; 
+
+  filterAlertsChange(filterName) {
+  	switch(filterName) {
+  		case "AllEvents":
+  			this.props.refreshFilteredTable(this.props.alerts);
+  			break;
+  		case "MinorSeverity":
+  			this.props.refreshFilteredTable(this.props.alerts.filter(alert => alert.severity === 2));
+  			break;
+  		default:
+  			this.props.refreshFilteredTable(this.props.alerts);
+  	}
+  }
+
 	render(){
 		return (
 			<div className="button-group">
-				<DateTimePicker onChange={ (startDate, endDate) => this.dateTimeRangeChange(startDate, endDate)} startDate={this.state.startDate} endDate={this.state.endDate}/>
+				<DropDownList listId="viewList" list={this.props.filterList} onInputValueChange={this.filterAlertsChange}/>
+
 				{
 					SEVERITY_NUM_ARRAY.map(num => {
 						return (<SeverityNumberBlock 
@@ -86,6 +103,16 @@ class ButtonGroup extends Component {
 									key={num}/>);
 					})
 				}
+			      <DropdownButton title="View" id="dropdown-size-medium" className="view-dropdown">
+			        {
+			        	this.props.viewList.map(view => {
+			        		return (<MenuItem eventKey={view.viewName} 
+			        						  key={view.viewName} 
+			        						  active={view.viewName === this.props.currentView.viewName}
+			        						  onSelect={(eventKey) => this.props.onViewItemClicked(eventKey)}>{view.viewName}</MenuItem>);
+			        	})
+			        }
+			      </DropdownButton>
 				<Button bsStyle="primary" className="single-button" disabled={!this.props.selectAlert} onClick={this.open}>Delete</Button>
 				<Modal show={this.state.showModal} onHide={this.close}>
 					<Modal.Header closeButton>

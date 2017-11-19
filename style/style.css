@@ -121,6 +121,10 @@ body {
   display: none;
 }
 
+.inline-div {
+  display: inline-block;
+}
+
 .block-combo {
   display:inline-block;
   margin-left: 20px;
@@ -135,4 +139,8 @@ body {
   margin-right: 5px;
   vertical-align: top;
   cursor: pointer;
+}
+
+.view-dropdown {
+  margin-left: 20px !important;
 }

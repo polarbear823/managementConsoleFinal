@@ -32,7 +32,12 @@ class AlertTable extends Component {
 		}
 
 		function severityFormatter(cell) {
-			return SEVERITY_STRING_MAP.get(cell);
+			let blockCssClass = `block ${getSeverityClassName(cell)}`;
+			return (
+				<div>
+				<div className={blockCssClass}></div>{SEVERITY_STRING_MAP.get(cell)}
+				</div>
+				);
 		}
 		function trSeverityFormat(rowData, rowIndex) {
 			let severity = rowData.severity;
@@ -83,18 +88,37 @@ class AlertTable extends Component {
 		};
 		const options = {
 			searchPosition: 'left',
-			defaultSortName: 'receiveTime',
+			//defaultSortName: 'receiveTime',
 			defaultSortOrder: 'desc'
 		};
+
+		function getAlertTableColumn(columnName) {
+			switch(columnName) {
+				case 'alertUID':
+					return (<TableHeaderColumn key={columnName} isKey dataField='alertUID' width="8%" dataSort dataFormat={ linkDetailFormatter } dataAlign="center">id</TableHeaderColumn>);
+					break;
+				case 'severity':
+					return (<TableHeaderColumn key={columnName} dataField='severity' width="8%" dataSort dataFormat={severityFormatter}>Severity</TableHeaderColumn>);
+					break;
+				case 'alertObj':
+					return (<TableHeaderColumn key={columnName} dataField='alertObj' width="15%" dataSort >Ip</TableHeaderColumn>);
+					break;
+				case 'alertTime':
+					return (<TableHeaderColumn key={columnName} dataField='alertTime'dataSort dataFormat={ dateFormatter }>Alert Time</TableHeaderColumn>);
+					break;
+				case 'receiveTime':
+					return (<TableHeaderColumn key={columnName} dataField='receiveTime' dataSort dataFormat={ dateFormatter }>Receive time</TableHeaderColumn>);
+					break;
+				case 'alertMsg':
+					return (<TableHeaderColumn key={columnName} dataField='alertMsg'>Alert detail</TableHeaderColumn>);
+					break;
+				default:
+			}
+		}
 		return (
 			<div>		
-			<BootstrapTable data={ this.props.alerts } selectRow={ selectRow } trClassName={trSeverityFormat} hover options={options} search tableHeaderClass='header-style'>
-				<TableHeaderColumn isKey dataField='alertUID' width="8%" dataSort dataFormat={ linkDetailFormatter } dataAlign="center">id</TableHeaderColumn>
-				<TableHeaderColumn dataField='severity' width="8%" dataSort dataFormat={severityFormatter}>Severity</TableHeaderColumn>
-				<TableHeaderColumn dataField='alertObj' width="15%" dataSort >Ip</TableHeaderColumn>				
-				<TableHeaderColumn dataField='alertTime' width="15%" dataSort dataFormat={ dateFormatter }>Alert Time</TableHeaderColumn>
-				<TableHeaderColumn dataField='receiveTime' width="15%" dataSort dataFormat={ dateFormatter }>Receive time</TableHeaderColumn>
-				<TableHeaderColumn dataField='alertMsg'>Alert detail</TableHeaderColumn>
+			<BootstrapTable data={ this.props.alerts } selectRow={ selectRow } hover options={options} search tableHeaderClass='header-style'>
+				{this.props.currentView.showProperties.map(colName => getAlertTableColumn(colName))}
 			</BootstrapTable>
 			<Modal show={this.state.showModal} onHide={this.close}>
 					<Modal.Header closeButton>

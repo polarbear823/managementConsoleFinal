@@ -16,7 +16,10 @@ class AlertList extends Component {
 			filteredAlerts: [],
 			selectAlert: null,
 			showHideLoading: false,
-			showHideNoMoreData: false
+			showHideNoMoreData: false,
+			filterList: [],
+			currentView: {viewName: "defaultView", showProperties: ["alertUID", "severity", "alertObj", "alertTime", "receiveTime", "alertMsg"]},
+			viewList: []
 		};
 		this.setSelectAlert = this.setSelectAlert.bind(this);
 		this.loadTableData = this.loadTableData.bind(this);
@@ -26,9 +29,20 @@ class AlertList extends Component {
 		return (
 			<div>
 				<NavBar />
-				<ButtonGroup selectAlert={this.state.selectAlert} alerts={this.state.alerts} filteredlerts={this.state.filteredAlerts} refreshFilteredTable={(newAlerts) => this.refreshFilteredTable(newAlerts)} refreshTable={(newAlerts) => this.refreshTable(newAlerts)} showNoMoreData={(show) => this.showNoMoreData(show)}/>
+				<ButtonGroup selectAlert={this.state.selectAlert} 
+							 alerts={this.state.alerts} 
+							 filteredlerts={this.state.filteredAlerts} 
+							 refreshFilteredTable={(newAlerts) => this.refreshFilteredTable(newAlerts)} 
+							 refreshTable={(newAlerts) => this.refreshTable(newAlerts)} 
+							 showNoMoreData={(show) => this.showNoMoreData(show)} 
+							 filterList={this.state.filterList} 
+							 viewList={this.state.viewList} 
+							 currentView={this.state.currentView}
+							 onViewItemClicked={(viewName) => this.onViewItemClicked(viewName)}/>
 				<div className="alerts-table" ref={ node => this.contentNode = node }>
-				<AlertTable alerts={this.state.filteredAlerts} setSelectAlert={alert => this.setSelectAlert(alert)}/>
+				<AlertTable alerts={this.state.filteredAlerts} 
+							setSelectAlert={alert => this.setSelectAlert(alert)}
+							currentView = {this.state.currentView}/>
 				</div>
 				{
 					this.state.showHideLoading ? <div>Loading...</div> : null
@@ -38,6 +52,12 @@ class AlertList extends Component {
 				}
 			</div>
 			);
+	}
+
+	onViewItemClicked(viewName) {
+		console.log(this.state.viewList);
+		let currentView = this.state.viewList.filter(view => view.viewName === viewName)[0];
+		this.setState({currentView});
 	}
 
 	setSelectAlert(alert) {
@@ -59,7 +79,7 @@ class AlertList extends Component {
 	componentDidMount() {
 		if (this.contentNode) {
 			this.contentNode.addEventListener('scroll', this.onScrollHandle.bind(this));
-			this.loadTableData();
+			this.loadMockTableData();
 		}
 		//setInterval(this.loadTableData, 30000);
   	}
@@ -79,6 +99,50 @@ class AlertList extends Component {
 	  	.catch(function(error){
 	  		console.log(error);
 	  	});
+  }
+
+  loadMockTableData() {
+  	const alertsList = [
+  		{
+  			alertUID: 1,
+  			severity: 1,
+  			alertObj: "255.255.255.0",
+  			alertTime: "1510895006",
+  			receiveTime: "1510896626",
+  			alertMsg: "some message about alert"
+  		},
+  		{
+  			alertUID: 2,
+  			severity: 2,
+  			alertObj: "255.255.255.1",
+  			alertTime: "1510895026",
+  			receiveTime: "1510896646",
+  			alertMsg: "some message about alert"
+  		},
+  		{
+  			alertUID: 3,
+  			severity: 3,
+  			alertObj: "255.255.255.0",
+  			alertTime: "1510895046",
+  			receiveTime: "1510896666",
+  			alertMsg: "some message about alert"
+  		}
+  	];
+  	const filterList = [
+  		"AllEvents",
+  		"MinorSeverity"
+  	];
+  	const viewList = [
+  		{
+  			viewName: "defaultView",
+  			showProperties: ["alertUID", "severity", "alertObj", "alertTime", "receiveTime", "alertMsg"]
+  		},
+  		{
+  			viewName: "noTimeView",
+  			showProperties: ["alertUID", "severity", "alertObj", "alertMsg"]
+  		}
+  	];
+  	this.setState({alerts: alertsList, filteredAlerts: alertsList, filterList, viewList});
   }
   loadMoreTableData(startDate) {
   		let endDate = moment().endOf('day');
@@ -106,7 +170,7 @@ class AlertList extends Component {
     	if (lastAlertIndex >= 0 && !this.state.showHideNoMoreData){
     		this.setState({showHideLoading: true});
     		console.log(this.state.alerts[lastAlertIndex].receiveTime);
-    		this.loadMoreTableData(this.state.alerts[lastAlertIndex].receiveTime);
+    		//this.loadMoreTableData(this.state.alerts[lastAlertIndex].receiveTime);
     	}
     }
   }
