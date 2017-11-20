@@ -114,24 +114,24 @@ class AlertList extends Component {
   			alertUID: 1,
   			severity: 1,
   			alertObj: "255.255.255.0",
-  			alertTime: "1510895006",
-  			receiveTime: "1510896626",
+  			alertTime: 1511151440000,
+  			receiveTime: 1511151713000,
   			alertMsg: "some message about alert"
   		},
   		{
   			alertUID: 2,
   			severity: 2,
   			alertObj: "255.255.255.1",
-  			alertTime: "1510895026",
-  			receiveTime: "1510896646",
+  			alertTime: 1511151440000,
+  			receiveTime: 1511151713000,
   			alertMsg: "some message about alert"
   		},
   		{
   			alertUID: 3,
   			severity: 3,
   			alertObj: "255.255.255.0",
-  			alertTime: "1510895046",
-  			receiveTime: "1510896666",
+  			alertTime: 1511151440000,
+  			receiveTime: 1511151713000,
   			alertMsg: "some message about alert"
   		}
   	];
