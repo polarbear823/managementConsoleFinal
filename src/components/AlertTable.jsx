@@ -87,7 +87,6 @@ class AlertTable extends Component {
 	  		onSelect: onRowSelect
 		};
 		const options = {
-			searchPosition: 'left',
 			//defaultSortName: 'receiveTime',
 			defaultSortOrder: 'desc'
 		};
@@ -117,7 +116,7 @@ class AlertTable extends Component {
 		}
 		return (
 			<div>		
-			<BootstrapTable data={ this.props.alerts } selectRow={ selectRow } hover options={options} search tableHeaderClass='header-style'>
+			<BootstrapTable data={ this.props.alerts } selectRow={ selectRow } hover options={options} tableHeaderClass='header-style'>
 				{this.props.currentView.showProperties.map(colName => getAlertTableColumn(colName))}
 			</BootstrapTable>
 			<Modal show={this.state.showModal} onHide={this.close}>

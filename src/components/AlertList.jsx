@@ -7,6 +7,7 @@ import ButtonGroup from './ButtonGroup.jsx';
 import AlertTable from './AlertTable.jsx';
 import NavBar from './NavBar.jsx';
 import {ROOT_ALERTS_API_URL} from '../configure_variables';
+import {MOCK_ALERTS, MOCK_FILTER_LIST, MOCK_VIEW_LIST, MOCK_ACTION_MENU} from '../mockData';
 
 class AlertList extends Component {
 	constructor(props) {
@@ -19,7 +20,8 @@ class AlertList extends Component {
 			showHideNoMoreData: false,
 			filterList: [],
 			currentView: {viewName: "defaultView", showProperties: ["alertUID", "severity", "alertObj", "alertTime", "receiveTime", "alertMsg"]},
-			viewList: []
+			viewList: [],
+			actions:[]
 		};
 		this.setSelectAlert = this.setSelectAlert.bind(this);
 		this.loadTableData = this.loadTableData.bind(this);
@@ -39,7 +41,9 @@ class AlertList extends Component {
 							 viewList={this.state.viewList} 
 							 currentView={this.state.currentView}
 							 onViewItemClicked={(viewName) => this.onViewItemClicked(viewName)}
-							 deleteAlert={(alert) => this.deleteMockAlert(alert)}/>
+							 deleteAlert={(alert) => this.deleteMockAlert(alert)}
+							 actions={this.state.actions}
+							 changeSeverity={(mockAlert) => this.changeSeverity(mockAlert)}/>
 				<div className="alerts-table" ref={ node => this.contentNode = node }>
 				<AlertTable alerts={this.state.filteredAlerts} 
 							setSelectAlert={alert => this.setSelectAlert(alert)}
@@ -59,6 +63,14 @@ class AlertList extends Component {
 		this.setState({
 			alerts: this.state.alerts.filter(alert => alert.alertUID != mockAlert.alertUID), 
 			filteredAlerts: this.state.filteredAlerts.filter(alert => alert.alertUID != mockAlert.alertUID)});
+	}
+
+	changeSeverity(mockAlert) {
+		let changedAlerts = this.state.alerts.filter(alert => alert.alertUID != mockAlert.alertUID).concat(mockAlert);
+		this.setState({
+			alerts: changedAlerts,
+			filteredAlerts: changedAlerts
+		});
 	}
 
 	onViewItemClicked(viewName) {
@@ -109,47 +121,7 @@ class AlertList extends Component {
   }
 
   loadMockTableData() {
-  	const alertsList = [
-  		{
-  			alertUID: 1,
-  			severity: 1,
-  			alertObj: "255.255.255.0",
-  			alertTime: 1511151440000,
-  			receiveTime: 1511151713000,
-  			alertMsg: "some message about alert"
-  		},
-  		{
-  			alertUID: 2,
-  			severity: 2,
-  			alertObj: "255.255.255.1",
-  			alertTime: 1511151440000,
-  			receiveTime: 1511151713000,
-  			alertMsg: "some message about alert"
-  		},
-  		{
-  			alertUID: 3,
-  			severity: 3,
-  			alertObj: "255.255.255.0",
-  			alertTime: 1511151440000,
-  			receiveTime: 1511151713000,
-  			alertMsg: "some message about alert"
-  		}
-  	];
-  	const filterList = [
-  		"AllEvents",
-  		"MinorSeverity"
-  	];
-  	const viewList = [
-  		{
-  			viewName: "defaultView",
-  			showProperties: ["alertUID", "severity", "alertObj", "alertTime", "receiveTime", "alertMsg"]
-  		},
-  		{
-  			viewName: "noTimeView",
-  			showProperties: ["alertUID", "severity", "alertObj", "alertMsg"]
-  		}
-  	];
-  	this.setState({alerts: alertsList, filteredAlerts: alertsList, filterList, viewList});
+  	this.setState({alerts: MOCK_ALERTS, filteredAlerts: MOCK_ALERTS, filterList: MOCK_FILTER_LIST, viewList: MOCK_VIEW_LIST, actions: MOCK_ACTION_MENU});
   }
   loadMoreTableData(startDate) {
   		let endDate = moment().endOf('day');
