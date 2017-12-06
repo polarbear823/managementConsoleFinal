@@ -26,6 +26,7 @@ class AlertList extends Component {
 		this.setSelectAlert = this.setSelectAlert.bind(this);
 		this.loadTableData = this.loadTableData.bind(this);
 		this.loadMoreTableData = this.loadMoreTableData.bind(this);
+		this.loadMoreMockTableData = this.loadMoreMockTableData.bind(this);
 	}
 	render(){
 		return (
@@ -123,6 +124,12 @@ class AlertList extends Component {
   loadMockTableData() {
   	this.setState({alerts: MOCK_ALERTS, filteredAlerts: MOCK_ALERTS, filterList: MOCK_FILTER_LIST, viewList: MOCK_VIEW_LIST, actions: MOCK_ACTION_MENU});
   }
+
+  loadMoreMockTableData(lastIndex) {
+  	if (lastIndex < this.state.alerts.length - 1) {
+  		this.setState({showHideNoMoreData: false, filteredAlerts: this.state.filteredAlerts.concat(this.state.alerts.slice(lastIndex + 1, lastIndex + 11 < this.state.alerts.length ? lastIndex + 11 : this.state.alerts.length - 1))});
+  	}
+  }
   loadMoreTableData(startDate) {
   		let endDate = moment().endOf('day');
   		const alertListUrl = `${ROOT_ALERTS_API_URL}search/findByReceiveTime?startTime=${startDate.valueOf()}&endTime=${endDate.valueOf()}`;
@@ -131,7 +138,7 @@ class AlertList extends Component {
 	  		let newAlerts = [ ...new Set( [].concat( this.state.alerts, response.data ) ) ];
 	  		this.setState({showHideLoading: false});
 	  		if (response.data.length == 0) {
-	  			this.setState({showHideNoMoreData: true});	  			
+	  			this.setState({showHideNoMoreData: false});	  			
 	  		}
 	  		this.setState({alerts: newAlerts, filteredAlerts: newAlerts});
 	  	})
@@ -149,6 +156,7 @@ class AlertList extends Component {
     	if (lastAlertIndex >= 0 && !this.state.showHideNoMoreData){
     		this.setState({showHideLoading: true});
     		console.log(this.state.alerts[lastAlertIndex].receiveTime);
+    		this.loadMoreMockTableData(lastAlertIndex)
     		//this.loadMoreTableData(this.state.alerts[lastAlertIndex].receiveTime);
     	}
     }
