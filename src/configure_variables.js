@@ -8,6 +8,14 @@ export const SEVERITY_STRING_MAP = new Map().set(1, "Normal")
 											.set(4, "Major")
 											.set(5, "Critical")
 											.set(-1, "Unknown");
+export const ALERT_PROPERTIES = [
+	{ value: 'alertUID', label: 'alertUID' },
+	{ value: 'severity', label: 'severity' },
+	{ value: 'alertObj', label: 'alertObj' },
+	{ value: 'alertTime', label: 'alertTime' },
+	{ value: 'receiveTime', label: 'receiveTime' },
+	{ value: 'alertMsg', label: 'alertMsg' },
+];
 export function getSeverityClassName(severity) {
 	switch(severity){
 				case 1:

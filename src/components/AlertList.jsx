@@ -44,7 +44,9 @@ class AlertList extends Component {
 							 onViewItemClicked={(viewName) => this.onViewItemClicked(viewName)}
 							 deleteAlert={(alert) => this.deleteMockAlert(alert)}
 							 actions={this.state.actions}
-							 changeSeverity={(mockAlert) => this.changeSeverity(mockAlert)}/>
+							 changeSeverity={(mockAlert) => this.changeSeverity(mockAlert)}
+							 addView = {(newView) => this.addView(newView)} 
+							 addFilter = {(newFilter) => this.addFilter(newFilter)}/>
 				<div className="alerts-table" ref={ node => this.contentNode = node }>
 				<AlertTable alerts={this.state.filteredAlerts} 
 							setSelectAlert={alert => this.setSelectAlert(alert)}
@@ -58,6 +60,14 @@ class AlertList extends Component {
 				}
 			</div>
 			);
+	}
+
+	addView(newView) {
+		this.setState({viewList: this.state.viewList.concat(newView)});
+	}
+
+	addFilter(newFilter) {
+		this.setState({filterList: this.state.filterList.concat(newFilter)});
 	}
 
 	deleteMockAlert(mockAlert) {
@@ -75,7 +85,6 @@ class AlertList extends Component {
 	}
 
 	onViewItemClicked(viewName) {
-		console.log(this.state.viewList);
 		let currentView = this.state.viewList.filter(view => view.viewName === viewName)[0];
 		this.setState({currentView});
 	}

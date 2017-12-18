@@ -26,8 +26,20 @@ export const MOCK_ALERTS = [
   	];
 
 export const MOCK_FILTER_LIST = [
-      "AllEvents",
-      "MinorSeverity"
+      {
+        filterName:"AllEvents",
+        severities: null,
+        alertTimeRange: null,
+        receiveTimeRange: null,
+        alertMessageContains: null
+      },
+      {
+        filterName: "MinorSeverity",
+        severities: [3],
+        alertTimeRange: null,
+        receiveTimeRange: null,
+        alertMessageContains: null
+      }
     ];
 
 export const MOCK_VIEW_LIST = [
